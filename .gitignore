@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+venv/
+.venv/
+env/
+target/
+.mvn/
+bin/
+build/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Logs and Data
+*.log
+startup.log
+h2-data/
+*.h2.db
+
+# Environment and Secrets
+.env
+.env.local
+.env.*.local
+
+# OS
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Project Specific
+python-ml-service/__pycache__/
+python-ml-service/*.pyc
+backend/.settings/
+backend/.classpath
+backend/.project
+frontend/.next/
+frontend/out/
+
+# Keep helpful scripts
+!run-all.bat
+!setup-ml.bat
