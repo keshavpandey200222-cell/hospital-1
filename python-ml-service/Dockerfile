@@ -2,19 +2,19 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# Install system dependencies (VERY IMPORTANT)
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     gcc \
     g++ \
+    python3-dev \
     libpq-dev \
-    ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
 
-# Upgrade pip (IMPORTANT)
-RUN pip install --upgrade pip
+# Upgrade pip, setuptools, wheel (VERY IMPORTANT)
+RUN pip install --upgrade pip setuptools wheel
 
 RUN pip install --no-cache-dir -r requirements.txt
 
