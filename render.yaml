@@ -27,7 +27,7 @@ services:
     region: singapore
     envVars:
       - key: PORT
-        value: 8000
+        value: 10000
 
   # Frontend Service (Next.js)
   - type: web
