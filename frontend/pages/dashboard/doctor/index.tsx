@@ -7,7 +7,7 @@ import { useDemoData } from '../../../context/DemoDataContext'
 const VideoCallModal = dynamic(() => import('../../../components/VideoCall/VideoCallModal'), { ssr: false })
 
 export default function DoctorDashboard() {
-  const { appointments, cancelAppointment } = useDemoData()
+  const { currentUser, appointments, cancelAppointment } = useDemoData()
   const [joiningCall, setJoiningCall] = useState<string | null>(null)
   const [queueActive, setQueueActive] = useState(false)
   const [admittedPatients, setAdmittedPatients] = useState<string[]>([])
@@ -50,10 +50,32 @@ export default function DoctorDashboard() {
   return (
     <DashboardLayout role="doctor" title="Overview">
       <main className="py-6 animate-fade-in-up">
+        {currentUser && !currentUser.isVerified && (
+          <div className="mb-10 p-8 rounded-[2rem] border border-amber-500/30 bg-gradient-to-r from-amber-500/10 to-transparent flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl shadow-amber-500/5">
+            <div className="flex items-center gap-6 text-center md:text-left">
+              <div className="w-16 h-16 bg-amber-500/20 rounded-2xl flex items-center justify-center text-3xl shadow-inner">⚠️</div>
+              <div>
+                <h3 className="text-xl font-bold theme-text-primary mb-1">Verify Your Clinical Credentials</h3>
+                <p className="text-amber-600 dark:text-amber-200/60 text-sm font-medium">Your profile is missing a verified status. Upload your medical license to unlock full features.</p>
+              </div>
+            </div>
+            <Link href="/dashboard/doctor/verification" className="bg-amber-500 hover:bg-amber-400 text-slate-900 px-8 py-4 rounded-xl font-black italic transition-all shadow-lg shadow-amber-500/30 active:scale-95">
+              Start Verification
+            </Link>
+          </div>
+        )}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">Good morning, Dr. Jenkins 👋</h1>
-            <p className="text-slate-400">You have {todaysAppointments.length} appointments remaining today.</p>
+            <h1 className="text-3xl sm:text-4xl font-bold text-[#313D5A] dark:text-white mb-2 flex items-center gap-3">
+              Good morning, {currentUser?.name || 'Doctor'}
+              {currentUser?.isVerified && (
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white text-sm shadow-[0_0_15px_rgba(59,130,246,0.5)]" title="Verified Professional">
+                  ✓
+                </span>
+              )}
+              👋
+            </h1>
+            <p className="theme-text-muted font-medium">You have {todaysAppointments.length} appointments remaining today.</p>
           </div>
           {!queueActive ? (
             <button onClick={handleStartQueue} className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-full font-semibold shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all flex items-center gap-2 group">
@@ -112,18 +134,18 @@ export default function DoctorDashboard() {
 
               {/* Patient Info Sidebar */}
               <div className="space-y-4">
-                <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-                  <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Patient Info</h3>
+                <div className="dark:bg-white/5 bg-[#CBC5EA]/10 rounded-xl p-4 border dark:border-white/5 border-[#73628A]/10">
+                  <h3 className="text-sm font-bold theme-text-muted uppercase tracking-wider mb-3">Patient Info</h3>
                   <div className="space-y-2 text-sm">
-                    <div className="flex justify-between"><span className="text-slate-400">Name</span><span className="text-white font-medium">{currentPatient.patientName}</span></div>
-                    <div className="flex justify-between"><span className="text-slate-400">ID</span><span className="text-white font-medium">{currentPatient.patientId}</span></div>
-                    <div className="flex justify-between"><span className="text-slate-400">Visit</span><span className="text-white font-medium">{currentPatient.specialty}</span></div>
-                    <div className="flex justify-between"><span className="text-slate-400">Type</span><span className="text-emerald-400 font-medium capitalize">{currentPatient.type}</span></div>
+                    <div className="flex justify-between"><span className="theme-text-muted font-medium">Name</span><span className="text-[#313D5A] dark:text-white font-bold">{currentPatient.patientName}</span></div>
+                    <div className="flex justify-between"><span className="theme-text-muted font-medium">ID</span><span className="text-[#313D5A] dark:text-white font-bold">{currentPatient.patientId}</span></div>
+                    <div className="flex justify-between"><span className="theme-text-muted font-medium">Visit</span><span className="text-[#313D5A] dark:text-white font-bold">{currentPatient.specialty}</span></div>
+                    <div className="flex justify-between"><span className="theme-text-muted font-medium">Type</span><span className="text-emerald-500 font-bold capitalize">{currentPatient.type}</span></div>
                   </div>
                 </div>
-                <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-                  <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Session Notes</h3>
-                  <textarea placeholder="Type consultation notes..." className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder-slate-500 outline-none focus:border-emerald-500 resize-none h-24 transition-colors"></textarea>
+                <div className="dark:bg-white/5 bg-[#CBC5EA]/10 rounded-xl p-4 border dark:border-white/5 border-[#73628A]/10">
+                  <h3 className="text-sm font-bold theme-text-muted uppercase tracking-wider mb-3">Session Notes</h3>
+                  <textarea placeholder="Type consultation notes..." className="w-full dark:bg-white/5 bg-white border dark:border-white/10 border-[#73628A]/10 rounded-lg px-3 py-2 theme-text-primary text-sm placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none h-24 transition-all font-medium"></textarea>
                 </div>
                 <button onClick={() => handleAdmitPatient(currentPatient.id)} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl font-semibold shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all">
                   ✓ Complete & Admit
@@ -138,15 +160,15 @@ export default function DoctorDashboard() {
           <div className="glass-card rounded-2xl p-6 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-colors"></div>
             <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl mb-4 border border-emerald-500/20">🩺</div>
-            <p className="text-sm text-slate-400 font-medium mb-1">Remaining Patients</p>
-            <p className="text-3xl font-bold text-white">{todaysAppointments.length}</p>
+            <p className="text-sm theme-text-muted font-bold mb-1">Remaining Patients</p>
+            <p className="text-3xl font-bold theme-text-primary">{todaysAppointments.length}</p>
           </div>
           
           <div className="glass-card rounded-2xl p-6 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-colors"></div>
             <div className="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-2xl mb-4 border border-blue-500/20">✅</div>
-            <p className="text-sm text-slate-400 font-medium mb-1">Admitted Today</p>
-            <p className="text-3xl font-bold text-white">{admittedPatients.length}</p>
+            <p className="text-sm theme-text-muted font-bold mb-1">Admitted Today</p>
+            <p className="text-3xl font-bold theme-text-primary">{admittedPatients.length}</p>
           </div>
 
           <div className="glass-card rounded-2xl p-6 relative overflow-hidden group">
@@ -156,10 +178,10 @@ export default function DoctorDashboard() {
               {queueActive ? (
                 <div className="flex items-center gap-2">
                   <span className="flex h-3 w-3 relative"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span></span>
-                  <span className="text-xl font-bold text-emerald-400">Live</span>
+                  <span className="text-xl font-bold text-emerald-500">Live</span>
                 </div>
               ) : (
-                <p className="text-xl font-bold text-slate-400">Inactive</p>
+                <p className="text-xl font-bold theme-text-muted">Inactive</p>
               )}
             </div>
           </div>
@@ -167,8 +189,8 @@ export default function DoctorDashboard() {
 
         {/* Queue */}
         <div className="flex items-center justify-between mb-6">
-           <h2 className="text-xl font-bold text-white">Patient Queue</h2>
-           <Link href="/dashboard/doctor/schedule" className="text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors">
+           <h2 className="text-xl font-bold theme-text-primary">Patient Queue</h2>
+           <Link href="/dashboard/doctor/schedule" className="text-sm font-bold text-emerald-500 hover:text-emerald-400 transition-colors">
               Manage Schedule →
            </Link>
         </div>
@@ -176,24 +198,24 @@ export default function DoctorDashboard() {
         <div className="glass-card rounded-2xl overflow-hidden mb-12">
           <div className="divide-y divide-white/5">
             {todaysAppointments.length === 0 ? (
-              <div className="p-12 text-center text-slate-400">
+              <div className="p-12 text-center theme-text-muted">
                 <div className="text-4xl mb-4">🎉</div>
-                <p className="text-lg font-semibold text-white mb-2">All patients seen!</p>
-                <p>You have admitted {admittedPatients.length} patients today. Great work!</p>
+                <p className="text-lg font-bold theme-text-primary mb-2">All patients seen!</p>
+                <p className="font-medium">You have admitted {admittedPatients.length} patients today. Great work!</p>
               </div>
             ) : (
               todaysAppointments.map((appt, i) => (
-                <div key={appt.id} className={`p-6 hover:bg-white/[0.02] transition-colors flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 ${i > 0 ? 'opacity-50' : ''}`}>
+                <div key={appt.id} className={`p-6 hover:dark:bg-white/[0.02] hover:bg-[#CBC5EA]/5 transition-colors flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 ${i > 0 ? 'opacity-50' : ''}`}>
                   <div className="flex gap-4 items-center">
-                    <div className="w-14 h-14 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center overflow-hidden shadow-inner shrink-0 relative">
+                    <div className="w-14 h-14 rounded-full dark:bg-slate-800 bg-slate-100 border dark:border-slate-700 border-slate-200 flex items-center justify-center overflow-hidden shadow-inner shrink-0 relative">
                        <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${appt.patientName}&backgroundColor=transparent`} alt="Patient" className={`w-12 h-12 ${i > 0 ? 'grayscale' : ''}`} />
                     </div>
                     <div>
                       <div className="flex items-center gap-3 mb-1">
-                          <h3 className="font-bold text-white text-lg">{appt.patientName}</h3>
+                          <h3 className="font-bold theme-text-primary text-lg">{appt.patientName}</h3>
                           {i === 0 && <span className="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">Next</span>}
                       </div>
-                      <p className="text-xs text-slate-400 flex items-center gap-2">
+                      <p className="text-xs theme-text-muted flex items-center gap-2 font-medium">
                          <span>ID: {appt.patientId}</span>
                          <span>•</span>
                          <span>{appt.type === 'telemedicine' ? '📹 Telemedicine' : `🏥 In-Person${appt.room ? ` • Room ${appt.room}` : ''}`}</span>
@@ -201,13 +223,13 @@ export default function DoctorDashboard() {
                     </div>
                   </div>
                   <div className="flex flex-col sm:items-end gap-2 w-full sm:w-auto">
-                    <div className={`${i === 0 ? 'bg-white/10 border-white/10 text-white' : 'bg-white/5 border-white/5 text-slate-400'} text-sm font-semibold px-3 py-1.5 rounded-lg inline-flex items-center gap-2 w-fit border`}>
+                    <div className={`${i === 0 ? 'dark:bg-white/10 bg-[#CBC5EA]/10 dark:border-white/10 border-[#73628A]/10 theme-text-primary' : 'dark:bg-white/5 bg-[#CBC5EA]/5 dark:border-white/5 border-[#73628A]/10 theme-text-muted'} text-sm font-bold px-3 py-1.5 rounded-lg inline-flex items-center gap-2 w-fit border`}>
                        {appt.time}
                     </div>
-                    <div className="text-sm text-slate-300 font-medium">{appt.specialty}</div>
+                    <div className="text-sm theme-text-muted font-bold">{appt.specialty}</div>
                   </div>
                   <div className="flex gap-3 w-full sm:w-auto mt-2 sm:mt-0">
-                     <Link href="/dashboard/doctor/patients" className="flex-1 sm:flex-none border border-white/10 text-slate-300 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-white/5 transition-colors text-center">View History</Link>
+                     <Link href="/dashboard/doctor/patients" className="flex-1 sm:flex-none border dark:border-white/10 border-slate-200 theme-text-muted px-4 py-2 rounded-xl text-sm font-bold hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-center">View History</Link>
                      {i === 0 && (
                        <button onClick={() => handleAdmitPatient(appt.id)} className="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all flex justify-center items-center gap-2">
                          Admit Patient
@@ -238,29 +260,29 @@ export default function DoctorDashboard() {
                 </div>
               </div>
 
-              <div className="space-y-4 mb-6">
-                <div>
-                  <label className="text-sm text-slate-400 block mb-1">Diagnosis / Notes</label>
-                  <textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Enter diagnosis, consultation notes, or follow-up instructions..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-500 outline-none focus:border-emerald-500 resize-none h-28 transition-colors"></textarea>
-                </div>
-                <div>
-                  <label className="text-sm text-slate-400 block mb-1">Follow-up Action</label>
-                  <select className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white outline-none appearance-none cursor-pointer">
-                    <option className="text-black" value="none">No follow-up needed</option>
-                    <option className="text-black" value="schedule">Schedule follow-up visit</option>
-                    <option className="text-black" value="lab">Order lab work</option>
-                    <option className="text-black" value="referral">Refer to specialist</option>
-                    <option className="text-black" value="prescription">Issue new prescription</option>
-                  </select>
-                </div>
+              <div className="space-y-6 mb-8">
+              <div>
+                <label className="text-xs font-bold theme-text-muted ml-1 block mb-2 uppercase tracking-wide">Diagnosis / Clinical Notes</label>
+                <textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Enter clinical findings..." className="w-full dark:bg-white/5 bg-white border dark:border-white/10 border-[#73628A]/10 rounded-xl px-4 py-4 theme-text-primary placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none h-28 transition-all font-medium"></textarea>
               </div>
+              <div>
+                <label className="text-xs font-bold theme-text-muted ml-1 block mb-2 uppercase tracking-wide">Treatment Plan</label>
+                <select className="w-full dark:bg-white/5 bg-white border dark:border-white/10 border-[#73628A]/10 rounded-xl px-4 py-4 theme-text-primary outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none cursor-pointer font-medium">
+                  <option className="dark:bg-slate-900 bg-white" value="none">No follow-up needed</option>
+                  <option className="dark:bg-slate-900 bg-white" value="schedule">Schedule follow-up visit</option>
+                  <option className="dark:bg-slate-900 bg-white" value="lab">Order lab work</option>
+                  <option className="dark:bg-slate-900 bg-white" value="referral">Refer to specialist</option>
+                  <option className="dark:bg-slate-900 bg-white" value="prescription">Issue prescription</option>
+                </select>
+              </div>
+            </div>
 
-              <div className="flex gap-3">
-                <button onClick={() => setShowAdmitModal(null)} className="flex-1 border border-white/10 text-slate-300 py-3 rounded-xl font-semibold hover:bg-white/5 transition-colors">Cancel</button>
-                <button onClick={confirmAdmit} className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl font-bold shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all flex justify-center items-center gap-2">
-                  ✓ Confirm Admission
-                </button>
-              </div>
+            <div className="flex gap-3">
+              <button onClick={() => setShowAdmitModal(null)} className="flex-1 border dark:border-white/10 border-slate-200 theme-text-muted py-4 rounded-xl font-bold hover:bg-slate-100 dark:hover:bg-white/5 transition-all">Cancel</button>
+              <button onClick={confirmAdmit} className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white py-4 rounded-xl font-black shadow-lg shadow-emerald-500/30 transition-all flex justify-center items-center gap-2">
+                ✓ Confirm Action
+              </button>
+            </div>
             </div>
           </div>
         );

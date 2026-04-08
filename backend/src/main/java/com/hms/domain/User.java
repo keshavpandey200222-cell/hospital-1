@@ -23,6 +23,10 @@ public class User {
     @Column(nullable = false)
     private String role; // PATIENT, DOCTOR, ADMIN
 
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

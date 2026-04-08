@@ -26,6 +26,31 @@ public class Doctor {
     @Column(nullable = false)
     private String specialty;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
+
+    @Column(precision = 3, scale = 2)
+    private java.math.BigDecimal rating = java.math.BigDecimal.valueOf(5.0);
+
+    @Column(name = "review_count")
+    private Integer reviewCount = 0;
+
+    @Column(name = "experience_years")
+    private Integer experienceYears = 0;
+
+    @Column(nullable = false)
+    private Boolean available = true;
+
+    @Column(name = "is_verified", nullable = false)
+    private Boolean isVerified = false;
+
+    @Column(name = "license_number")
+    private String licenseNumber;
+
+    @Column
+    private String qualification;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -65,6 +90,70 @@ public class Doctor {
     public void setSpecialty(String specialty) {
         this.specialty = specialty;
     }
+    public Hospital getHospital() {
+        return hospital;
+    }
+
+    public void setHospital(Hospital hospital) {
+        this.hospital = hospital;
+    }
+
+    public java.math.BigDecimal getRating() {
+        return rating;
+    }
+
+    public void setRating(java.math.BigDecimal rating) {
+        this.rating = rating;
+    }
+
+    public Integer getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(Integer reviewCount) {
+        this.reviewCount = reviewCount;
+    }
+
+    public Integer getExperienceYears() {
+        return experienceYears;
+    }
+
+    public void setExperienceYears(Integer experienceYears) {
+        this.experienceYears = experienceYears;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
+    }
+
+    public Boolean getIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(Boolean isVerified) {
+        this.isVerified = isVerified;
+    }
+
+    public String getLicenseNumber() {
+        return licenseNumber;
+    }
+
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
+    }
+
+    public String getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

@@ -28,6 +28,12 @@ public class Patient {
 
     private LocalDate dob;
 
+    @Column(name = "emergency_contact_name")
+    private String emergencyContactName;
+
+    @Column(name = "emergency_contact_phone")
+    private String emergencyContactPhone;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -74,6 +80,22 @@ public class Patient {
     public void setDob(LocalDate dob) {
         this.dob = dob;
     }
+    public String getEmergencyContactName() {
+        return emergencyContactName;
+    }
+
+    public void setEmergencyContactName(String emergencyContactName) {
+        this.emergencyContactName = emergencyContactName;
+    }
+
+    public String getEmergencyContactPhone() {
+        return emergencyContactPhone;
+    }
+
+    public void setEmergencyContactPhone(String emergencyContactPhone) {
+        this.emergencyContactPhone = emergencyContactPhone;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

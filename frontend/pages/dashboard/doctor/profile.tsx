@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import DashboardLayout from '../../../components/Layout/DashboardLayout';
+import ReviewList from '../../../components/Feedback/ReviewList';
+import { useTranslation } from 'react-i18next';
 
 export default function DoctorProfile() {
+  const { t } = useTranslation();
   const [editing, setEditing] = useState(false);
   const [saved, setSaved] = useState(false);
   const [profile, setProfile] = useState({
+    id: 1, // Added ID for review fetching
     firstName: 'Sarah',
     lastName: 'Jenkins',
     title: 'MD, FACC',
@@ -132,6 +136,15 @@ export default function DoctorProfile() {
         <div className="glass-card rounded-2xl p-6 mb-8">
           <h2 className="text-lg font-bold text-white mb-6 flex items-center gap-2">📝 Bio & About</h2>
           <Field label="Professional Biography" field="bio" span />
+        </div>
+
+        {/* Reviews */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+            <span className="p-2 bg-yellow-500/10 rounded-lg text-yellow-500 text-xl">⭐</span>
+            Patient Reviews
+          </h2>
+          <ReviewList doctorId={profile.id} />
         </div>
 
         {/* Logout */}

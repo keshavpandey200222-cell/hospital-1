@@ -81,7 +81,12 @@ export default function PatientsPage() {
 
               {/* Active Prescriptions */}
               <div className="glass-card rounded-2xl p-6">
-                <h3 className="text-lg font-bold text-white mb-4">💊 Active Prescriptions</h3>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-bold text-white">💊 Active Prescriptions</h3>
+                  <button className="text-xs bg-emerald-500 hover:bg-emerald-400 text-slate-900 px-3 py-1.5 rounded-lg font-bold transition-all active:scale-95">
+                    + Prescribe New
+                  </button>
+                </div>
                 <div className="space-y-3">
                   {prescriptions.map(rx => (
                     <div key={rx.id} className="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/5">
@@ -93,6 +98,30 @@ export default function PatientsPage() {
                     </div>
                   ))}
                 </div>
+              </div>
+
+              {/* Medication Reminder System (New) */}
+              <div className="glass-card rounded-2xl p-6 border-primary-500/10 bg-gradient-to-br from-primary-500/5 to-transparent">
+                 <h3 className="text-lg font-bold text-white mb-2">🔔 Smart Reminder System</h3>
+                 <p className="text-slate-400 text-sm mb-4">Set up automated daily dose alerts for this patient.</p>
+                 <div className="p-4 bg-white/5 rounded-xl border border-white/10 space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                       <input type="text" placeholder="Medicine Name (e.g. Aspirin)" className="bg-slate-900 border border-white/10 rounded-xl px-4 py-2 text-white text-sm outline-none focus:border-primary-500" />
+                       <input type="text" placeholder="Dosage (e.g. 50mg)" className="bg-slate-900 border border-white/10 rounded-xl px-4 py-2 text-white text-sm outline-none focus:border-primary-500" />
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                       <span className="text-xs text-slate-500 w-full mb-1">Schedule (Select Times):</span>
+                       {['08:00 AM', '02:00 PM', '09:00 PM'].map(t => (
+                         <label key={t} className="flex items-center gap-2 bg-slate-900 border border-white/10 px-3 py-1.5 rounded-lg cursor-pointer hover:border-primary-400 transition-colors">
+                            <input type="checkbox" className="accent-primary-500" />
+                            <span className="text-xs text-slate-300">{t}</span>
+                         </label>
+                       ))}
+                    </div>
+                    <button className="w-full bg-primary-600 hover:bg-primary-500 text-white text-sm font-bold py-2.5 rounded-xl transition-all shadow-lg shadow-primary-500/20">
+                       Save & Activate Smart Reminders
+                    </button>
+                 </div>
               </div>
             </div>
           ) : (

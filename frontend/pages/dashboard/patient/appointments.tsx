@@ -23,18 +23,18 @@ export default function AppointmentPage() {
   ];
 
   const doctors = [
-    { id: 'd1', name: 'Dr. Sarah Jenkins', specialty: 'cardio', rating: 4.9, available: 'Today' },
-    { id: 'd2', name: 'Dr. Marcus Lee', specialty: 'general', rating: 4.8, available: 'Tomorrow' },
-    { id: 'd3', name: 'Dr. Emily Chen', specialty: 'cardio', rating: 4.9, available: 'Oct 26' },
-    { id: 'd4', name: 'Dr. Alan Turing', specialty: 'neuro', rating: 5.0, available: 'Today' },
-    { id: 'd5', name: 'Dr. Jane Goodall', specialty: 'pedia', rating: 4.7, available: 'Oct 28' },
-    { id: 'd6', name: 'Dr. Robert Koch', specialty: 'ortho', rating: 4.6, available: 'Next Week' },
-    { id: 'd7', name: 'Dr. Rosalind F.', specialty: 'derma', rating: 4.9, available: 'Tomorrow' },
-    { id: 'd8', name: 'Dr. Alice Roberts', specialty: 'general', rating: 4.5, available: 'Oct 27' },
-    { id: 'd9', name: 'Dr. Sarah Jenkins', specialty: 'neuro', rating: 4.9, available: 'Next Week' },
-    { id: 'd10', name: 'Dr. Marcus Lee', specialty: 'ortho', rating: 4.8, available: 'Oct 29' },
-    { id: 'd11', name: 'Dr. Sarah Jenkins', specialty: 'derma', rating: 4.9, available: 'Tomorrow' },
-    { id: 'd12', name: 'Dr. Marcus Lee', specialty: 'pedia', rating: 4.8, available: 'Today' },
+    { id: 'd1', name: 'Dr. Sarah Jenkins', specialty: 'cardio', rating: 4.9, available: 'Today', isVerified: true },
+    { id: 'd2', name: 'Dr. Marcus Lee', specialty: 'general', rating: 4.8, available: 'Tomorrow', isVerified: false },
+    { id: 'd3', name: 'Dr. Emily Chen', specialty: 'cardio', rating: 4.9, available: 'Oct 26', isVerified: true },
+    { id: 'd4', name: 'Dr. Alan Turing', specialty: 'neuro', rating: 5.0, available: 'Today', isVerified: true },
+    { id: 'd5', name: 'Dr. Jane Goodall', specialty: 'pedia', rating: 4.7, available: 'Oct 28', isVerified: false },
+    { id: 'd6', name: 'Dr. Robert Koch', specialty: 'ortho', rating: 4.6, available: 'Next Week', isVerified: true },
+    { id: 'd7', name: 'Dr. Rosalind F.', specialty: 'derma', rating: 4.9, available: 'Tomorrow', isVerified: true },
+    { id: 'd8', name: 'Dr. Alice Roberts', specialty: 'general', rating: 4.5, available: 'Oct 27', isVerified: false },
+    { id: 'd9', name: 'Dr. Sarah Jenkins', specialty: 'neuro', rating: 4.9, available: 'Next Week', isVerified: true },
+    { id: 'd10', name: 'Dr. Marcus Lee', specialty: 'ortho', rating: 4.8, available: 'Oct 29', isVerified: false },
+    { id: 'd11', name: 'Dr. Sarah Jenkins', specialty: 'derma', rating: 4.9, available: 'Tomorrow', isVerified: true },
+    { id: 'd12', name: 'Dr. Marcus Lee', specialty: 'pedia', rating: 4.8, available: 'Today', isVerified: false },
   ];
 
   const timeSlots = ['09:00 AM', '09:30 AM', '10:00 AM', '11:00 AM', '02:00 PM', '03:30 PM', '04:00 PM'];
@@ -118,7 +118,12 @@ export default function AppointmentPage() {
                      <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${doc.name}&backgroundColor=transparent`} alt={doc.name} />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-bold text-white text-lg">{doc.name}</h3>
+                    <div className="flex items-center gap-2">
+                       <h3 className="font-bold text-white text-lg">{doc.name}</h3>
+                       {doc.isVerified && (
+                          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-500 text-white text-[10px] shadow-lg shadow-blue-500/20" title="Verified Professional">✓</span>
+                       )}
+                    </div>
                     <p className="text-sm text-primary-400">{specialties.find(s => s.id === doc.specialty)?.name}</p>
                     <div className="flex items-center gap-3 mt-2 text-xs">
                        <span className="text-amber-400 font-medium">★ {doc.rating}</span>
