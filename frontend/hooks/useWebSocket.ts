@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import SockJS from 'sockjs-client';
 import { Client, IMessage } from '@stomp/stompjs';
+import { getSockJsUrl } from '@/lib/runtimeConfig';
 
 export const useWebSocket = (userId: string) => {
   const [stompClient, setStompClient] = useState<Client | null>(null);
@@ -11,9 +12,8 @@ export const useWebSocket = (userId: string) => {
   useEffect(() => {
     if (!userId || typeof window === 'undefined') return;
 
-    const socket = new SockJS('http://localhost:8080/ws');
     const client = new Client({
-      webSocketFactory: () => socket,
+      webSocketFactory: () => new SockJS(getSockJsUrl()),
       debug: (str) => console.log('STOMP: ' + str),
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,

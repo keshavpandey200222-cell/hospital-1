@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/transfers")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(originPatterns = {"http://localhost:*", "https://hms-frontend-45nu.onrender.com"})
 public class SharingController {
 
     @Autowired

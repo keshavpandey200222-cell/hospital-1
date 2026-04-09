@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Star, Send, CheckCircle2 } from 'lucide-react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { getApiBaseUrl } from '@/lib/runtimeConfig';
 
 interface FeedbackFormProps {
   doctorId: number;
@@ -23,7 +24,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ doctorId, patientId, onSucc
 
     setIsSubmitting(true);
     try {
-      await axios.post('http://localhost:8080/api/feedback', {
+      await axios.post(`${getApiBaseUrl()}/api/feedback`, {
         patientId,
         doctorId,
         rating,

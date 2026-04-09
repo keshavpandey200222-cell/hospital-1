@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useWebSocket } from '@/hooks/useWebSocket';
+import { getApiBaseUrl } from '@/lib/runtimeConfig';
 
 interface CommunicationHubProps {
   userId: string;
@@ -20,7 +21,7 @@ export default function CommunicationHub({ userId, userName, role, activeContact
   useEffect(() => {
     if (activeContactId && isOpen) {
       // Mark existing messages as read in DB
-      fetch(`http://localhost:8080/api/communication/mark-read?senderId=${activeContactId}&receiverId=${userId}`, { method: 'POST' });
+      fetch(`${getApiBaseUrl()}/api/communication/mark-read?senderId=${activeContactId}&receiverId=${userId}`, { method: 'POST' });
       // Tell sender we've seen them (ensuring activeContactId is defined)
       if (activeContactId) sendReadReceipt(activeContactId);
     }

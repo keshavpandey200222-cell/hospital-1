@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Star, MessageCircle, Calendar } from 'lucide-react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { getApiBaseUrl } from '@/lib/runtimeConfig';
 
 interface Review {
   id: number;
@@ -27,7 +28,7 @@ const ReviewList: React.FC<ReviewListProps> = ({ doctorId }) => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/feedback/doctor/${doctorId}`);
+        const response = await axios.get(`${getApiBaseUrl()}/api/feedback/doctor/${doctorId}`);
         setReviews(response.data);
       } catch (error) {
         console.error('Error fetching reviews:', error);

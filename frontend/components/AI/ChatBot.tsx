@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useDemoData } from '../../context/DemoDataContext';
 import { useRouter } from 'next/router';
+import { getApiBaseUrl } from '@/lib/runtimeConfig';
 
 interface Message {
   id: string;
@@ -37,7 +38,7 @@ const ChatBot: React.FC = () => {
     setIsTyping(true);
 
     try {
-      const response = await fetch('http://localhost:8080/api/chat', {
+      const response = await fetch(`${getApiBaseUrl()}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text })

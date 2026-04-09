@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/suggestions")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(originPatterns = {"http://localhost:*", "https://hms-frontend-45nu.onrender.com"})
 public class SuggestionController {
 
     @Autowired

@@ -12,7 +12,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/communication")
-@CrossOrigin(origins = "*")
+@CrossOrigin(originPatterns = {"http://localhost:*", "https://hms-frontend-45nu.onrender.com"})
 public class ChatHistoryController {
 
     @Autowired

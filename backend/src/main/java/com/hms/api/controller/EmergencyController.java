@@ -13,7 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/emergency")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(originPatterns = {"http://localhost:*", "https://hms-frontend-45nu.onrender.com"})
 public class EmergencyController {
 
     @Autowired
